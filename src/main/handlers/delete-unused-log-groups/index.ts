@@ -7,6 +7,8 @@ import {
 import { LambdaClient, ListFunctionsCommand, ListFunctionsCommandInput } from '@aws-sdk/client-lambda';
 import { ScheduledHandler } from 'aws-lambda';
 
+import { applyRegex } from '@/utils';
+
 const logs = new CloudWatchLogsClient({});
 const lambda = new LambdaClient({});
 
@@ -34,10 +36,7 @@ const getFunctionNames = async () => {
     const response = await lambda.send(new ListFunctionsCommand(params));
     params.Marker = response.NextMarker;
     if (response?.Functions) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      functionNames = functionNames.concat(response?.Functions?.map((func) => `/aws/lambda/${func.FunctionName!}`));
+      functionNames = functionNames.concat(response?.Functions?.map((func) => `/aws/lambda/${String(func.FunctionName)}`));
     }
   } while (params.Marker);
 
@@ -50,12 +49,14 @@ const getFunctionLogGroupNames = async () => {
   do {
     const response = await logs.send(new DescribeLogGroupsCommand(params));
     params.nextToken = response.nextToken;
-    const filteredLgs = response.logGroups?.filter(
-      (lg) => lg.logGroupName !== undefined && lg.logGroupName !== null && lg.logGroupName !== '',
-    );
+    const filteredLgs = response.logGroups
+      ?.filter((lg) => lg.logGroupName !== undefined && lg.logGroupName !== null && lg.logGroupName !== '')
+      .map((lg) => lg.logGroupName)
+      .filter(applyRegex);
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    logGroups = logGroups.concat(filteredLgs.map((lg) => lg.logGroupName));
+    logGroups = logGroups.concat(filteredLgs);
   } while (params.nextToken);
 
   return logGroups;

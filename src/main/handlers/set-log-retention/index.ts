@@ -5,6 +5,8 @@ import {
   PutRetentionPolicyCommand,
 } from '@aws-sdk/client-cloudwatch-logs';
 
+import { applyRegex } from '@/utils';
+
 const logs = new CloudWatchLogsClient({});
 
 export const handler = async () => {
@@ -32,7 +34,8 @@ const getLambdaLogGroupsToUpdate = async () => {
       const logGroupName = response.logGroups
         .filter((lg) => lg.retentionInDays !== parseInt(process.env.LOG_GROUP_RETENTION_DAYS))
         .map((lg) => lg.logGroupName)
-        .filter((lgn) => lgn !== undefined && lgn !== null && lgn !== '');
+        .filter((lgn) => lgn !== undefined && lgn !== null && lgn !== '')
+        .filter(applyRegex);
       if (logGroupName && logGroupName.length) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
