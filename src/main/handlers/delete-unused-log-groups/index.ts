@@ -21,7 +21,6 @@ export const handler: ScheduledHandler = async () => {
       if (logGroupsToDelete?.length) {
         await deleteUnusedLogGroups(logGroupsToDelete);
       }
-
       console.info(`Deleted ${logGroupsToDelete.length} unused log groups`);
     }
   } catch (err) {

@@ -34,7 +34,7 @@ This project uses the [AWS v3 SDK](https://docs.aws.amazon.com/AWSJavaScriptSDK/
 The lambda functions are running *nodejs18.x* and are executed on the *arm64 architecture* aka [AWS Graviton2 processor](https://aws.amazon.com/blogs/aws/aws-lambda-functions-powered-by-aws-graviton2-processor-run-your-functions-on-arm-and-get-up-to-34-better-price-performance/).
 
 ## Contact
-You can show your support by following Allan on [Twitter][1] or connecting with him on [LinkedIn][3]. 
+You can show your support for the original project by following Allan on [Twitter][1] or connecting with him on [LinkedIn][3]. 
 I'm on [Twitter](https://www.twitter.com/rcoundon) 
 too if you have any questions on this implementation, or log an issue on Github.
 
