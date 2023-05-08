@@ -30,7 +30,7 @@ const getLambdaLogGroupsToUpdate = async () => {
     params.nextToken = response.nextToken;
     if (response.logGroups) {
       const logGroupName = response.logGroups
-        .filter((lg) => lg.retentionInDays !== parseInt(process.env.RETENTION_DAYS))
+        .filter((lg) => lg.retentionInDays !== parseInt(process.env.LOG_GROUP_RETENTION_DAYS))
         .map((lg) => lg.logGroupName)
         .filter((lgn) => lgn !== undefined && lgn !== null && lgn !== '');
       if (logGroupName && logGroupName.length) {
@@ -65,6 +65,6 @@ const setLogGroupRetentionPolicy = async (logGroups: string[]) => {
 const buildPutRetentionPolicyCommandInput = (logGroupName: string) => {
   return {
     logGroupName: logGroupName,
-    retentionInDays: parseInt(process.env.RETENTION_DAYS),
+    retentionInDays: parseInt(process.env.LOG_GROUP_RETENTION_DAYS),
   };
 };

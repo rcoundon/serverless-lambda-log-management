@@ -5,6 +5,9 @@ declare namespace NodeJS {
   type StringDuration = `${number} ${'second' | 'seconds' | 'minute' | 'minutes' | 'hour' | 'hours' | 'day' | 'days'}`;
 
   export interface ProcessEnv {
-    RETENTION_DAYS: StringNumber;
+    LOG_GROUP_RETENTION_DAYS: StringNumber;
+    LOG_GROUP_MATCH_REGEX?: string;
+    LOG_GROUP_RETENTION_CRON?: StringCron;
+    LOG_GROUP_DELETE_CRON?: StringCron;
   }
 }

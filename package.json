@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Utility lambdas designed to set log retention and delete unused lambda logs from CloudWatch.",
   "scripts": {
-    "deploy": "sst deploy",
-    "dev": "sst dev --stage dev --region eu-west-2",
-    "build": "sst build",
-    "diagram": "cfn-dia draw.io -t template.yaml -o images/diagram.drawio -c && drawio images/diagram.drawio -o images/diagram.png"
+    "deploy": "sst deploy --stage dev",
+    "dev": "sst dev --stage dev",
+    "build": "sst build --stage dev",
+    "diagram": "cdk-dia --tree .sst/dist/tree.json --target images/diagram.png"
   },
   "license": "MIT",
   "devDependencies": {
@@ -14,16 +14,17 @@
     "@typescript-eslint/eslint-plugin": "5.59.2",
     "@typescript-eslint/parser": "5.59.2",
     "aws-cdk-lib": "2.72.1",
+    "cdk-dia": "0.10.0",
     "constructs": "10.1.156",
-    "eslint": "8.39.0",
+    "eslint": "8.40.0",
     "eslint-config-prettier": "8.8.0",
     "prettier": "2.8.8",
     "typescript": "5.0.4",
     "vitest": "0.31.0"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "3.327.0",
-    "@aws-sdk/client-lambda": "3.327.0",
-    "sst": "2.8.4"
+    "@aws-sdk/client-cloudwatch-logs": "3.328.0",
+    "@aws-sdk/client-lambda": "3.328.0",
+    "sst": "2.8.7"
   }
 }
