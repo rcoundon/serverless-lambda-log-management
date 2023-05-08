@@ -23,6 +23,10 @@ It will set the log retention of all lambdas that do not match the configured re
 
 Typically you'd want to set this to run every 7 days. As this is likely a much less frequently needed lambda function, you might be able to run it on demand. Resource names do not change frequently (really only when [developers change it manually](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html#cfn-lambda-function-functionname)), so this lambda is set less frequently to run.
 
+##### Regex Matching
+For both lambdas, it's possible to specify a regular expression to match the log group name. So you could use `/-dev-/` to only apply this to log groups where their name matches `-dev-`
+This is specified using the `LOG_GROUP_MATCH_REGEX` env var
+
 ## Deployment
 
 See the docs over at [SST](https://docs.sst.dev/) for information on setting stage names and regions. The scripts in package json currently deploy to `eu-west-2` (specified in `sst.confiig.ts`) with stage `dev` so change this as appropriate
