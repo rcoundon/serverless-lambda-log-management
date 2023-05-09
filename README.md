@@ -29,7 +29,7 @@ This is specified using the `LOG_GROUP_MATCH_REGEX` env var
 
 ## Deployment
 
-See the docs over at [SST](https://docs.sst.dev/) for information on setting stage names and regions. The scripts in package json currently deploy to `eu-west-2` (specified in `sst.confiig.ts`) with stage `dev` so change this as appropriate
+See the docs over at [SST](https://docs.sst.dev/) for information on setting stage names and regions. The scripts in package json currently deploy to `eu-west-2` (specified in `sst.config.ts`) with stage `dev` so change this as appropriate
 
 ## Things of Note
 
