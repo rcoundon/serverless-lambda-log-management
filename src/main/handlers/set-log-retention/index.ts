@@ -11,6 +11,7 @@ import * as process from 'process';
 
 const limiter = new Bottleneck({
   minTime: 200,
+  maxConcurrent: 2,
 });
 
 const logs = new CloudWatchLogsClient({});

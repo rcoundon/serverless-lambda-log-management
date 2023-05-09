@@ -12,6 +12,7 @@ import { applyRegex } from '@/utils';
 
 const limiter = new Bottleneck({
   minTime: 200,
+  maxConcurrent: 2,
 });
 
 const logs = new CloudWatchLogsClient({});
