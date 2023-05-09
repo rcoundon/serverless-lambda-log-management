@@ -27,7 +27,7 @@ export function logManagementStack(ctx: sst.StackContext) {
     environment,
   });
 
-  if (process.env.LOG_GROUP_RETENTION_CRON) {
+  if (process.env.LOG_GROUP_RETENTION_CRON && !ctx.app.local) {
     new sst.Cron(ctx.stack, 'log-group-deletion-cron', {
       job: deleteUnusedLogsFunction,
       schedule: process.env.LOG_GROUP_RETENTION_CRON,
@@ -49,7 +49,7 @@ export function logManagementStack(ctx: sst.StackContext) {
   });
   setLogRetentionFunction.addToRolePolicy(logsRetentionPolicy);
 
-  if (process.env.LOG_GROUP_RETENTION_CRON) {
+  if (process.env.LOG_GROUP_RETENTION_CRON && !ctx.app.local) {
     new sst.Cron(ctx.stack, 'log-group-retention-cron', {
       job: setLogRetentionFunction,
       schedule: process.env.LOG_GROUP_RETENTION_CRON,

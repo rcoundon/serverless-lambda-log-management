@@ -6,8 +6,13 @@ import {
 } from '@aws-sdk/client-cloudwatch-logs';
 import { LambdaClient, ListFunctionsCommand, ListFunctionsCommandInput } from '@aws-sdk/client-lambda';
 import { ScheduledHandler } from 'aws-lambda';
+import Bottleneck from 'bottleneck';
 
 import { applyRegex } from '@/utils';
+
+const limiter = new Bottleneck({
+  minTime: 200,
+});
 
 const logs = new CloudWatchLogsClient({});
 const lambda = new LambdaClient({});
@@ -19,7 +24,7 @@ export const handler: ScheduledHandler = async () => {
       const logGroupNames = await getFunctionLogGroupNames();
       const logGroupsToDelete = logGroupNames.filter((lgn) => !functionNames.includes(lgn));
       if (logGroupsToDelete?.length) {
-        await deleteUnusedLogGroups(logGroupsToDelete);
+        await limiter.schedule(() => deleteUnusedLogGroups(logGroupsToDelete));
       }
       console.info(`Deleted ${logGroupsToDelete.length} unused log groups`);
     }
@@ -32,7 +37,7 @@ const getFunctionNames = async () => {
   let functionNames: string[] = [];
   const params: ListFunctionsCommandInput = {};
   do {
-    const response = await lambda.send(new ListFunctionsCommand(params));
+    const response = await limiter.schedule(() => lambda.send(new ListFunctionsCommand(params)));
     params.Marker = response.NextMarker;
     if (response?.Functions) {
       functionNames = functionNames.concat(response?.Functions?.map((func) => `/aws/lambda/${String(func.FunctionName)}`));
