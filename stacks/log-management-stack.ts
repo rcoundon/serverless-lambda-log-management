@@ -27,10 +27,10 @@ export function logManagementStack(ctx: sst.StackContext) {
     environment,
   });
 
-  if (process.env.LOG_GROUP_RETENTION_CRON && !ctx.app.local) {
+  if (process.env.LOG_GROUP_DELETE_CRON && !ctx.app.local) {
     new sst.Cron(ctx.stack, 'log-group-deletion-cron', {
       job: deleteUnusedLogsFunction,
-      schedule: process.env.LOG_GROUP_RETENTION_CRON,
+      schedule: process.env.LOG_GROUP_DELETE_CRON,
     });
   }
 
