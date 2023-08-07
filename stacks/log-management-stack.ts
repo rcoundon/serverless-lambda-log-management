@@ -1,6 +1,5 @@
 import * as sst from 'sst/constructs';
 import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
-import * as process from 'process';
 
 export function logManagementStack(ctx: sst.StackContext) {
   const logsDeletePolicy = new PolicyStatement({
@@ -25,6 +24,7 @@ export function logManagementStack(ctx: sst.StackContext) {
     handler: 'src/main/handlers/delete-unused-log-groups/index.handler',
     permissions: [listFunctionsPolicy, logsDeletePolicy],
     environment,
+    timeout: 900,
   });
 
   if (process.env.LOG_GROUP_RETENTION_CRON && !ctx.app.local) {

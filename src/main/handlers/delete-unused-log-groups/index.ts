@@ -77,9 +77,13 @@ const buildDescribeLogGroupsCommandInput = () => {
 };
 
 const deleteUnusedLogGroups = async (logGroupNames: string[]) => {
-  await Promise.all(
-    logGroupNames.map(async (logGroupName) => {
-      await logs.send(new DeleteLogGroupCommand({ logGroupName }));
-    }),
-  );
+  // Delete one at a time to avoid throttling
+  for (const logGroupName of logGroupNames) {
+    await logs.send(new DeleteLogGroupCommand({ logGroupName })).catch((err) => console.error(err));
+    await sleep(200);
+  }
+};
+
+const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
